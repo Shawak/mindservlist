@@ -52,8 +52,6 @@ services:
         volumes:
             - ./app:/app
             - /app/target
-        ports:
-            - 81:80
         environment:
             - DATABASE_URL=postgres://admin:admin@db/db
             - ROCKET_ENV=production
