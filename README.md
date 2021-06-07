@@ -1,6 +1,6 @@
 # Rustry
 
-Mindustry server list.
+Mindustry server list, hosted at [mindservlist.de](https://mindservlist.de/).
 
 ## Configuration
 
