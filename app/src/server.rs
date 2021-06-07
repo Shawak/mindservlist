@@ -49,6 +49,7 @@ pub struct NewServer<'a> {
 }
 
 impl Server {
+    // https://github.com/Anuken/Mindustry/blob/master/core/src/mindustry/net/NetworkIO.java#L82
     pub fn new<T: Read>(real_ip: String, ip: String, updated: i64, ping: i32, data: &mut T) -> Result<Server, Error> {
         Ok(Server {
             real_ip: real_ip,
