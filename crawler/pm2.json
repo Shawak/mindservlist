@@ -1,0 +1,15 @@
+{
+	"name": "app",
+	"description": "",
+	"repository": "",
+	"script": "src/app.js",
+	"instances": "1",
+	"watch": true,
+	"restart_delay": 1000,
+	"ignore_watch": [
+		"node_modules"
+	],
+	"watch_options": {
+		"usePolling": true
+	}
+}

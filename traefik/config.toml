@@ -1,0 +1,30 @@
+[api]
+  insecure = true
+  dashboard = true
+
+[providers.docker]
+  endpoint = "unix:///var/run/docker.sock"
+  exposedByDefault = false
+
+[providers.file]
+  directory = "/etc/traefik"
+
+[entryPoints]
+  [entryPoints.http]
+    address = ":80"
+    [entryPoints.http.http.redirections]
+      [entryPoints.http.http.redirections.entryPoint]
+        to = "https"
+        scheme = "https"
+
+  [entryPoints.https]
+    address = ":443"
+
+[certificatesResolvers.tls.acme]
+  email = "info@mindservlist.de"
+  storage = "/letsencrypt/acme.json"
+
+  [certificatesResolvers.tls.acme.tlsChallenge]
+
+  [certificatesResolvers.tls.acme.httpChallenge]
+    entryPoint = "https"

@@ -1,0 +1,10 @@
+{
+    "name": "app",
+    "description": "",
+    "repository": "",
+    "license": "UNLICENSED",
+    "main": "src/app.js",
+    "dependencies": {
+        "node-fetch": "^2.6.1"
+    }
+}

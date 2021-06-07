@@ -1,0 +1,95 @@
+version: '3.7'
+
+services:
+
+    db:
+        image: postgres:12
+        restart: always
+        user: root
+        volumes:
+            - db:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_DB=db
+            - POSTGRES_USER=admin
+            - POSTGRES_PASSWORD=admin
+
+    adminer:
+        image: adminer:4.8.1
+        restart: always
+        labels:
+            - traefik.enable=true
+            - traefik.http.services.adminer.loadbalancer.server.port=8080
+            - traefik.http.routers.adminer.rule=Host(`adminer.mindservlist.de`) || HostRegexp(`adminer.localhost`)
+            - traefik.http.routers.adminer.tls=true
+            - traefik.http.routers.adminer.entrypoints=https
+            - traefik.http.routers.adminer.tls.certResolver=tls
+            - traefik.http.middlewares.adminer-ratelimit.ratelimit.average=10
+            - traefik.http.middlewares.adminer-ratelimit.ratelimit.burst=5
+            - traefik.http.middlewares.adminer-auth.basicauth.users=${HTPASSWD}
+            - traefik.http.routers.adminer.middlewares=adminer-ratelimit,adminer-auth
+
+    website:
+        image: nginx:1.21
+        restart: always
+        volumes:
+            - ./website:/usr/share/nginx/html
+        labels:
+            - traefik.enable=true               
+            - traefik.http.services.website-rustry.loadbalancer.server.port=80
+            # traefik routing negations coming soon, e.g. !PathPrefix(`/api`)
+            # see https://github.com/traefik/traefik/pull/8164
+            - traefik.http.routers.website-rustry.rule=Host(`mindservlist.de`) || HostRegexp(`localhost`)
+            - traefik.http.routers.website-rustry.tls=true
+            - traefik.http.routers.website-rustry.entrypoints=https
+            - traefik.http.routers.website-rustry.tls.certResolver=tls
+            - traefik.http.middlewares.website-ratelimit.ratelimit.average=60
+            - traefik.http.middlewares.website-ratelimit.ratelimit.burst=30
+            - traefik.http.routers.website-rustry.middlewares=website-ratelimit
+
+    app:
+        build: app
+        restart: always
+        volumes:
+            - ./app:/app
+            - /app/target
+        ports:
+            - 81:80
+        environment:
+            - DATABASE_URL=postgres://admin:admin@db/db
+            - ROCKET_ENV=production
+        labels:
+            - traefik.enable=true
+            - traefik.http.services.app-rustry.loadbalancer.server.port=80
+            - traefik.http.routers.app-rustry.rule=(Host(`mindservlist.de`) || HostRegexp(`localhost`)) && PathPrefix(`/api`)
+            - traefik.http.routers.app-rustry.tls=true
+            - traefik.http.routers.app-rustry.entrypoints=https
+            - traefik.http.routers.app-rustry.tls.certResolver=tls
+            - traefik.http.middlewares.app-ratelimit.ratelimit.average=10
+            - traefik.http.middlewares.app-ratelimit.ratelimit.burst=5
+            - traefik.http.routers.app-rustry.middlewares=app-ratelimit
+
+    crawler:
+        build: crawler
+        restart: always
+        volumes:
+            - ./crawler:/app
+            - /app/node_modules
+
+    traefik:
+        image: traefik:v2.4
+        restart: always
+        environment:
+            - HTPASSWD=${HTPASSWD}
+        ports:
+            - 80:80
+            - 443:443
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+            - ./traefik/letsencrypt:/letsencrypt
+            - ./traefik/config.toml:/etc/traefik/traefik.toml
+            - ./traefik/config-template.gtoml:/etc/traefik/config-template.toml
+        command: >
+            --configFile=/etc/traefik/traefik.toml
+
+volumes:
+    db:

@@ -1,0 +1,3 @@
+# Rustry
+
+Mindustry server list.

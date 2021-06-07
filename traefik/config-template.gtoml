@@ -1,0 +1,10 @@
+[http.middlewares.traefik-auth.basicAuth]
+  users = ["{{ env "HTPASSWD" }}"]
+
+[http.routers.traefik-api]
+  rule = "Host(`traefik.mindservlist.de`) || HostRegexp(`traefik.localhost`)"
+  service = "api@internal"
+  entryPoints = ["https"]
+  middlewares = ["traefik-auth@file"]
+  [http.routers.traefik-api.tls]
+    certResolver = "tls"
