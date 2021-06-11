@@ -107,6 +107,8 @@ async fn update() -> Result<Option<Server>> {
             if next.fails < 3 {
                 next.fails += 1;
             } else {
+                next.players = 0;
+                next.wave = 0;
                 next.ping = -1;
             }
             next.updated = now();

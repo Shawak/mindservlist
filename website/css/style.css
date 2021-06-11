@@ -60,16 +60,16 @@ a:visited {
    opacity: 0.5; 
 }
 
-/* hide stauts sort button */
+/* hide status sort button */
 thead tr th:first-child {
     cursor: default !important;
     background-image: none !important;
 }
 
 /* hightlight server */
-/*tr:nth-child(2) {
+/* tr:nth-child(2) {
     background-color: rgb(136, 185, 0) !important;
-}*/
+} */
 
 input[type="search"] {
     position: relative;

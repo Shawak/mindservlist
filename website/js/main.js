@@ -147,7 +147,7 @@
 
         const updated = dateDiffStr(row.updated * 1000);
         const diff = dateDiffStr(data * 1000);
-        return `<span title='updated ${updated}'>${diff}</span>`;
+        return `<span title='Updated ${updated}'>${diff}</span>`;
     }
 
     // https://github.com/Anuken/Mindustry/blob/c339a0ecdf078391e405e58dd4c5ba2b9845bc39/core/src/mindustry/game/Gamemode.java
@@ -171,7 +171,8 @@
 
     function renderStatus (data, type, row) {
         if (type == 'sort' || type == 'type') {
-            return data ? 1 : 0;
+            // small hack, abuse this for default sorting
+            return data ? Number.MAX_VALUE : row.last_seen;
         }
         let status = data ? 'online' : 'offline';
         return `<img class="status" title="${status}" src="image/${status}.png">`;
@@ -211,8 +212,7 @@
             { data: "vertype", orderable: true, render: renderString },
             { data: "gamemode", orderable: true, render: renderGamemode },
             { data: "ping", orderable: true, render: renderPing },
-            //{ data: "updated", orderable: true, render: renderUpdated },
-            { data: "last_seen", orderable: true, render: renderLastSeen },
+            { data: "last_seen", orderable: false, render: renderLastSeen },
         ],
         language: {
             searchPlaceholder: "Search..",
