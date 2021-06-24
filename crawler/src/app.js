@@ -6,6 +6,7 @@ const lists = [
     "https://raw.githubusercontent.com/Anuken/Mindustry/master/servers.json",
     "https://raw.githubusercontent.com/Anuken/Mindustry/master/servers_be.json",
     "https://raw.githubusercontent.com/Anuken/Mindustry/master/servers_v6.json"
+    "https://raw.githubusercontent.com/Anuken/Mindustry/master/servers_v7.json",
 ];
 
 async function update_server(address) {
@@ -13,7 +14,6 @@ async function update_server(address) {
     const res = await fetch(`http://app/api/server/${address}`);
     const json = await res.json()
     //console.log(json.error || 'ok');
-    await sleep(1000);
 }
 
 async function update_list(list) {
@@ -27,13 +27,12 @@ async function update_list(list) {
     for (let address of addresses) {
         try {
             await update_server(address);
+            await sleep(1000);
         }
         catch (e) {
             console.error(e);
         }
     }
-
-    await sleep(1000);
 }
 
 (async () => {
@@ -46,6 +45,7 @@ async function update_list(list) {
         catch (e) {
             console.error(e);
         }
+        await sleep(1000);
 
         index += 1;
         index %= lists.length;
