@@ -27,11 +27,11 @@ async function update_list(list) {
     for (let address of addresses) {
         try {
             await update_server(address);
-            await sleep(1000);
         }
         catch (e) {
             console.error(e);
         }
+        await sleep(1000);
     }
 }
 
