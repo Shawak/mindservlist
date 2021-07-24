@@ -3,7 +3,6 @@ global.dump = object => console.dir(object, { depth: null });
 global.fetch = require("node-fetch");
 
 const lists = [
-    "https://raw.githubusercontent.com/Anuken/Mindustry/master/servers.json",
     "https://raw.githubusercontent.com/Anuken/Mindustry/master/servers_be.json",
     "https://raw.githubusercontent.com/Anuken/Mindustry/master/servers_v6.json",
     "https://raw.githubusercontent.com/Anuken/Mindustry/master/servers_v7.json"
