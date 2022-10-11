@@ -101,7 +101,8 @@
             crimson: '#ff341cff', // scarlet
 
             // special
-            accent: '#ffcb39ff'
+            accent: '#ffcb39ff',
+            unlaunched: '#8982edff'
         };
 
         if (color[0] == '#') {
