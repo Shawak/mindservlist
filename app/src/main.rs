@@ -65,9 +65,6 @@ fn online() -> JsonValue {
 #[get("/server/<ip>")]
 fn server(mut ip: String) -> JsonValue {
     ip = ip.to_lowercase();
-    if !ip.contains(":") {
-        ip =  ip + ":6567";
-    }
 
     let result = task::block_on(get(&ip));
     let info = match result {
@@ -164,7 +161,16 @@ pub fn now() -> i64 {
 }
 
 async fn get(address: &String) -> Result<Server> {
-    let mut client = Client::new().await?;
-    let res = client.get(address).await?;
-    Ok(res)
+    let mut addr = address.clone();
+    if !addr.contains(":") {
+        addr =  addr + ":6567";
+    }
+
+    let client = Client::new().await?;
+    //Ok(client.get(&addr).await?)
+    if let Ok(res) = client.get(&addr).await {
+        return Ok(res);
+    }
+
+    Ok(client.get_by_srv(&format!("_mindustry._tcp.{}", address)).await?)
 }

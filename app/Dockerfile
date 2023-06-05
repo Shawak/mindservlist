@@ -1,7 +1,9 @@
-FROM rust:1.52-buster
+FROM rust:1.70-slim
 
 RUN mkdir /app && cd /app
 WORKDIR /app
+
+RUN apt update && apt install -y libpq-dev
 
 RUN cargo install diesel_cli --version 1.4.0 --no-default-features --features postgres
 

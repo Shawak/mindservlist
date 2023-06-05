@@ -7,12 +7,13 @@ include = ["Cargo.toml", "**/*.rs"]
 
 [dependencies]
 rocket = "0.4.10"
-diesel = { version = "1.4.0", features = ["postgres"] }
+diesel = { version = "1.4.8", features = ["postgres"] }
 diesel_migrations = { version = "1.4.0" }
 dotenv = "0.15.0"
 serde = { version = "1.0", features = ["derive"] }
 pear = "0.2.3"
 pear_codegen = "0.2.3"
+srv-rs = { version = "0.2.0", features = ["libresolv"] }
 
 [dependencies.rocket_contrib]
 version = "0.4.3"

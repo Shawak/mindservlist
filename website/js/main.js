@@ -262,7 +262,7 @@
             let ip = element.value;
             element.disabled = true;
             $.get('/api/server/' + ip, (e) => {
-                alert(e.error || 'Server added successfully!');
+                alert(e.error ? 'Could not add the server' : 'Server added successfully!');
                 table.ajax.reload();
                 element.value = '';
             })
