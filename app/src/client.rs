@@ -43,9 +43,10 @@ impl Client {
         let (records, _) = client.get_srv_records().await?;
 
         let record = records.first().ok_or("SRV no entry")?;
-        let addr = &record.target;
+        let target = &record.target;
         let port = record.port;
 
-        self.get(&format!("{}:{}", addr, port)).await
+        let addr = format!("{}:{}", target, port);
+        self.get(&addr).await
     }
 }

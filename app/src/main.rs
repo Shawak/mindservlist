@@ -167,10 +167,10 @@ async fn get(address: &String) -> Result<Server> {
     }
 
     let client = Client::new().await?;
-    //Ok(client.get(&addr).await?)
     if let Ok(res) = client.get(&addr).await {
         return Ok(res);
     }
 
-    Ok(client.get_by_srv(&format!("_mindustry._tcp.{}", address)).await?)
+    let res = client.get_by_srv(&format!("_mindustry._tcp.{}", address)).await?;
+    Ok(res)
 }
