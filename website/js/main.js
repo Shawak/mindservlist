@@ -101,7 +101,11 @@
             crimson: '#ff341cff', // scarlet
 
             // special
-            accent: '#ffcb39ff'
+            // see: https://github.com/Anuken/Mindustry/blob/61e9ffb7e87661b866196ad38e1100c406b53bc2/core/src/mindustry/core/UI.java#L125-L128
+            // https://github.com/Anuken/Mindustry/blob/b7948852b30beb3bc71893e50c1d1250726ad0dd/core/src/mindustry/graphics/Pal.java
+            accent: '#ffcb39ff',
+            unlaunched: '#8982edff',
+            stat: '#ffd37fff',
         };
 
         if (color[0] == '#') {
